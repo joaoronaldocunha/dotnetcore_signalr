@@ -1,0 +1,9 @@
+# Dependency directories
+node_modules/**
+
+# binary
+bin/**
+obj/**
+
+# compiled 
+wwwroot/
