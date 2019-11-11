@@ -6,11 +6,14 @@ dotnet new web -o [PROJECT]
 3. Criar pasta Hubs.
 
 4. inicializar npm:
+```
 npm init
+```
 
 5. Alterar "package.json":
 
 5.1. Incluir dev dependencies
+```javascript
 "devDependencies": {
   "clean-webpack-plugin": "1.0.1",
   "css-loader": "2.1.0",
@@ -21,16 +24,22 @@ npm init
   "webpack": "4.29.3",
   "webpack-cli": "3.2.3"
 }
+```
 
 5.2. Incluir dependencies:
+```javascript
 "dependencies": {
   "@aspnet/signalr": "^1.1.4"
 }
+```
 
 6. Instalar npm:
+```
 npm install
+```
 
 7. Criar arquivo "Hubs/ChatHub.cs"
+```csharp
 using Microsoft.AspNetCore.SignalR;
 using System.Threading.Tasks;
 
@@ -44,16 +53,20 @@ namespace [DEFAULT NAMESPACE].Hubs
         }
     }
 }
+```
 
 8. Alterar Program.cs para incluir o serviço SignalR:
+```csharp
 using SignalRWebPack.Hubs;
 ...
 public void ConfigureServices(IServiceCollection services)
 {
     services.AddSignalR();
 }
+```
 
 9. Incluir recurso para acessar arquivos estáticos e definir arquivos padrão:
+```csharp
 public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
 {
     ...
@@ -63,16 +76,20 @@ public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
 
     ...
 }
+```
 
 10. Substituir Endpoint para mapear para o ChatHub:
+```csharp
 app.UseEndpoints(endpoints =>
 {
     endpoints.MapHub<ChatHub>("/hub");
 });
+```
 
 11. Criar nova pasta "src"
 
 12. Criar arquivo "src/index.html":
+```html
 <!DOCTYPE html>
 <html>
 <head>
@@ -89,8 +106,10 @@ app.UseEndpoints(endpoints =>
     </div>
 </body>
 </html>
+```
 
 13. Criar arquivo "src/index.ts":
+```typescript
 import "./css/main.css";
 import * as signalR from "@aspnet/signalr";
 
@@ -127,10 +146,12 @@ function send() {
     connection.send("newMessage", username, tbMessage.value)
               .then(() => tbMessage.value = "");
 }
+```
 
 14. Criar pasta "src\css".
 
 15. Criar arquivo "src\css\main.css":
+```css
 *, *::before, *::after {
     box-sizing: border-box;
 }
@@ -164,15 +185,19 @@ html, body {
     overflow-y: auto;
     padding: 5px;
 }
+```
 
 16. Criar o arquivo ".\src\tsconfig.json":
+```javascript
 {
   "compilerOptions": {
     "target": "es5"
   }
 }
+```
 
 17. Criar arquivo .\webpack.config.js:
+```javascript
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const CleanWebpackPlugin = require("clean-webpack-plugin");
@@ -210,16 +235,23 @@ module.exports = {
         })
     ]
 };
+```
 
 18. Incluir scripts no "package.json":
+```javascript
 "scripts": {
   "build": "webpack --mode=development --watch",
   "release": "webpack --mode=production",
   "publish": "npm run release && dotnet publish -c Release"
 }
+```
 
 19. Executar o script publish:
+```
 npm run publish
+```
 
 20. Executar o dotnet:
+```
 dotnet run
+```
